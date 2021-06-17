@@ -29,6 +29,7 @@ public class ClientController implements Initializable
     private String username;
     private String gruppenname;
     ClientProxy cp;
+    NachrichtDummy nachricht;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
@@ -100,7 +101,8 @@ public class ClientController implements Initializable
 
     public void  schickeNachricht()
     {
-        cp.schreiben(username + ": " + nachrichten.getText());
+        nachricht = new NachrichtDummy(username + ": " + nachrichten.getText());
+        cp.schreiben(username + ": " + nachrichten.getText() + "#" + nachricht.hashCode);
         nachrichten.setText("");
     }
     private void schickeAnfangsdaten()

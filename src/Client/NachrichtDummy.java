@@ -14,6 +14,11 @@ public class NachrichtDummy {
         takeTime();
         this.hashCode = hashCode();
     }
+    public NachrichtDummy(String inhalt, int hashCode)
+    {
+        this.inhalt = inhalt;
+        this.hashCode = hashCode;
+    }
 
     @Override
     public int hashCode()
@@ -23,9 +28,10 @@ public class NachrichtDummy {
         hashWert = Objects.hash(hashWert, gesendet);
         return hashWert;
     }
-
     public void takeTime()
     {
         gesendet = LocalDateTime.now();
     }
+
+
 }

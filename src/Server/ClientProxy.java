@@ -50,11 +50,7 @@ public class ClientProxy implements Runnable
 
             while ((s = reader.readLine()) != null)
             {
-                if(s.startsWith("#"))
-                {
-
-                }
-                else if(s.startsWith(";"))
+                if(s.startsWith(";"))
                 {
 
 
