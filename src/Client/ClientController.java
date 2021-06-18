@@ -102,7 +102,7 @@ public class ClientController implements Initializable
     public void  schickeNachricht()
     {
         nachricht = new NachrichtDummy(username + ": " + nachrichten.getText());
-        cp.schreiben(username + ": " + nachrichten.getText() + "#" + nachricht.hashCode);
+        cp.schreiben(username + ": " + nachrichten.getText() + "#" + nachricht.getHashCode() + "#" + nachricht.getSender() + "#" + nachricht.getArt() + "\n");
         nachrichten.setText("");
     }
     private void schickeAnfangsdaten()

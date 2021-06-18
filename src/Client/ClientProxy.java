@@ -12,7 +12,8 @@ public class ClientProxy implements Runnable
     DataInputStream readerint;
     Socket client;
     ClientController c;
-    ArrayList<String> nachrichtEmpfangen = new ArrayList<String>();
+    ArrayList<Confirmation> nachrichtEmpfangen = new ArrayList<Confirmation>();
+    ArrayList<Confirmation> nachrichtGesendet = new ArrayList<Confirmation>();
 
     public ClientProxy(Socket client, ClientController c)
     {
@@ -23,8 +24,6 @@ public class ClientProxy implements Runnable
         {
             OutputStream out = client.getOutputStream();
             InputStream in = client.getInputStream();
-            writeint = new DataOutputStream(out);
-            readerint = new DataInputStream(in);
             writer = new PrintWriter(out);
             reader = new BufferedReader(new InputStreamReader(in));
         } catch (Exception e) {
@@ -38,29 +37,23 @@ public class ClientProxy implements Runnable
         {
             String s = null;
 
-            NachrichtDummy dummy;
-
+            Confirmation conf;
 
             while ((s = reader.readLine()) != null)
             {
-                dummy = new NachrichtDummy(s);
                 String[] parts = s.split("#");
-                nachrichtEmpfangen.add(parts[1]);
+                conf = new Confirmation(parts[3],parts[2],parts[0],Integer.parseInt(parts[1]));
+                nachrichtEmpfangen.add(conf);
                 System.out.println(parts[1]);
                 c.textWindow.appendText(parts[0]);
-                gelesen(parts[1]);
+                gelesen(Integer.parseInt(parts[1]));
             }
-            /*
-            while ((b = readerint.readInt()) != 0)
-            {
-                c.textWindow.appendText(b +"\n");
-            }*/
 
 
             //writer.close();
             //reader.close();
         } catch (Exception e) {
-            System.out.println("Fehler in ClientProxy Constructor");
+            System.out.println("Fehler in ClientProxy Run");
         }
     }
 
@@ -69,15 +62,26 @@ public class ClientProxy implements Runnable
         writer.write(s + "\n");
         writer.flush();
     }
-    public void gelesen(String vergleichCode)
+    public void gelesen(int vergleichCode)
     {
-        for(String hashCode : nachrichtEmpfangen)
+        for(Confirmation hashCodegelesen : nachrichtGesendet)
         {
-            if(vergleichCode.equals(hashCode))
+            if(vergleichCode == hashCodegelesen.getHashCode())
             {
-                c.textWindow.appendText("       gelesen" + hashCode + "\n");
+                System.out.println("Eigene Nachricht");
+            }
+            else
+            {
+                for(Confirmation hashCode : nachrichtEmpfangen)
+                {
+                    if(vergleichCode == hashCode.getHashCode())
+                    {
+                        c.textWindow.appendText("       gelesen" + hashCode + "\n");
+                    }
+                }
             }
         }
+
     }
 
 }
